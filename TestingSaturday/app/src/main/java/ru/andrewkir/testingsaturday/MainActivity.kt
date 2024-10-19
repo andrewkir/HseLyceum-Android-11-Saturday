@@ -9,15 +9,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.andrewkir.testingsaturday.ui.components.Article
-import ru.andrewkir.testingsaturday.ui.components.NewsCard
+import ru.andrewkir.testingsaturday.models.GoodsModel
+import ru.andrewkir.testingsaturday.ui.components.GoodsCard
 import ru.andrewkir.testingsaturday.ui.theme.TestingSaturdayTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +26,7 @@ class MainActivity : ComponentActivity() {
       TestingSaturdayTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
           Column(modifier = Modifier.padding(innerPadding)) {
-            News()
+            Goods()
           }
         }
       }
@@ -37,21 +35,29 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun News() {
-  val news = listOf(
-    Article("asd1", "asdasdasodjas;dlkjn"),
-    Article("asd2", "asdasdasodjas;dlkjn"),
-    Article("asd3", "asdasdasodjas;dlkjn"),
-    Article("asd4", "asdasdasodjas;dlkjn"),
-    Article("asd5", "asdasdasodjas;dlkjn"),
-    Article("asd6", "asdasdasodjas;dlkjn"),
+fun Goods() {
+  val goodsItems = listOf(
+    GoodsModel(
+      name = "BMW M5",
+      rating = 4,
+      price = 1000000,
+      comment = "Немецкое качество",
+      coverId = R.drawable.bmw
+    ),
+    GoodsModel(
+      name = "MB Maybach",
+      rating = 5,
+      price = 1000000,
+      comment = "качество",
+      coverId = R.drawable.gaz
+    )
   )
 
-  LazyColumn {
-    news.forEach { article ->
+  LazyColumn(modifier = Modifier.padding(horizontal = 6.dp)) {
+    goodsItems.forEach{goodsModel ->
       item {
-        NewsCard(article)
-        Spacer(modifier = Modifier.padding(vertical = 8.dp))
+        GoodsCard(goodsModel)
+        Spacer(modifier = Modifier.padding(6.dp))
       }
     }
   }
@@ -61,6 +67,6 @@ fun News() {
 @Composable
 fun GreetingPreview() {
   TestingSaturdayTheme {
-    News()
+    Goods()
   }
 }
