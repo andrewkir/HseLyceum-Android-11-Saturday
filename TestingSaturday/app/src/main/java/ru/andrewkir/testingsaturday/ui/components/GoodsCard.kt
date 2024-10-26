@@ -1,7 +1,7 @@
 package ru.andrewkir.testingsaturday.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,61 +29,78 @@ import ru.andrewkir.testingsaturday.models.GoodsModel
 @Composable
 fun GoodsCard(
   item: GoodsModel,
+  onButtonClick: (String) -> Unit,
 ) {
   ElevatedCard(
     modifier = Modifier
       .fillMaxWidth()
-  ) {
-    Column {
-      Image(
-        modifier = Modifier
-          .height(150.dp)
-          .fillMaxWidth(),
-        painter = painterResource(item.coverId),
-        contentDescription = null,
-        contentScale = ContentScale.Crop
-      )
-
-      Row(
-        modifier = Modifier
-          .padding(vertical = 12.dp, horizontal = 14.dp)
-          .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        Text(
-          text = item.name,
-          fontWeight = FontWeight.Bold,
-          fontSize = 24.sp,
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        for (i in 1..5) {
-          Icon(
-            imageVector = if (i <= item.rating) {
-              Icons.Default.Favorite
-            } else {
-              Icons.Default.FavoriteBorder
-            },
-            contentDescription = null,
-            tint = if (i <= item.rating) {
-              Color(0xFFEE6C6C)
-            } else {
-              Color.Black
-            }
-          )
-        }
+      .clickable {
+        onButtonClick(item.name)
       }
+  ) {
+    Image(
+      modifier = Modifier
+        .height(150.dp)
+        .fillMaxWidth(),
+      painter = painterResource(item.coverId),
+      contentDescription = "Фоновое изображение",
+      contentScale = ContentScale.Crop
+    )
 
+    Row(
+      modifier = Modifier
+        .padding(vertical = 12.dp, horizontal = 14.dp)
+        .fillMaxWidth(),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
       Text(
-        modifier = Modifier.padding(start = 12.dp, bottom = 12.dp),
-        text = "Всего за ${item.price}"
+        text = item.name,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
       )
 
+      Spacer(modifier = Modifier.weight(1f))
+
+      for (i in 1..5) {
+        Icon(
+          imageVector = if (i <= item.rating) {
+            Icons.Default.Favorite
+          } else {
+            Icons.Default.FavoriteBorder
+          },
+          contentDescription = null,
+          tint = if (i <= item.rating) {
+            Color(0xFFEE6C6C)
+          } else {
+            Color.Black
+          }
+        )
+      }
+    }
+
+    Text(
+      modifier = Modifier.padding(start = 12.dp, bottom = 12.dp),
+      text = "Всего за ${item.price}"
+    )
+
+    Row(
+      modifier = Modifier.padding(start = 12.dp, bottom = 12.dp),
+      verticalAlignment = Alignment.CenterVertically
+    ) {
       Text(
-        modifier = Modifier.padding(start = 12.dp, bottom = 12.dp),
         text = item.comment,
       )
+
+      Spacer(Modifier.weight(1f))
+
+//      Button(
+//        modifier = Modifier.padding(end = 16.dp),
+//        onClick = {
+//          onButtonClick(item.name)
+//        }
+//      ) {
+//        Text(text = "Купить")
+//      }
     }
   }
 }
@@ -98,6 +115,7 @@ private fun GoodsCardPreview() {
       price = 1000000,
       comment = "Немецкое качество",
       coverId = R.drawable.bmw
-    )
+    ),
+    {}
   )
 }

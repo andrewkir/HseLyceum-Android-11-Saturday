@@ -1,5 +1,6 @@
 package ru.andrewkir.testingsaturday
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,12 +22,22 @@ import ru.andrewkir.testingsaturday.ui.theme.TestingSaturdayTheme
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
     enableEdgeToEdge()
     setContent {
       TestingSaturdayTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
           Column(modifier = Modifier.padding(innerPadding)) {
-            Goods()
+            Goods(
+              onGoodsButtonClick = {goodsName ->
+                val intent = Intent(baseContext, GoodsDetails::class.java)
+                intent.putExtra("NAME_KEY", goodsName)
+                startActivity(intent)
+
+                //Во второй активити получаете значение
+              // val name = intent.extras?.getString("NAME_KEY") ?: "Пусто"
+              }
+            )
           }
         }
       }
@@ -35,7 +46,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Goods() {
+fun Goods(onGoodsButtonClick: (String) -> Unit) {
   val goodsItems = listOf(
     GoodsModel(
       name = "BMW M5",
@@ -54,9 +65,12 @@ fun Goods() {
   )
 
   LazyColumn(modifier = Modifier.padding(horizontal = 6.dp)) {
-    goodsItems.forEach{goodsModel ->
+    goodsItems.forEach { goodsModel ->
       item {
-        GoodsCard(goodsModel)
+        GoodsCard(
+          item = goodsModel,
+          onButtonClick = onGoodsButtonClick
+        )
         Spacer(modifier = Modifier.padding(6.dp))
       }
     }
@@ -67,6 +81,6 @@ fun Goods() {
 @Composable
 fun GreetingPreview() {
   TestingSaturdayTheme {
-    Goods()
+    Goods() {}
   }
 }
