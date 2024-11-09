@@ -12,7 +12,10 @@ fun GoodsScreen() {
   val state by viewModel.state.collectAsState()
 
   GoodsScreenContent(
-    state
+    state = state,
+    onEvent = {
+      viewModel.handleEvent(it)
+    },
   )
 
 }
