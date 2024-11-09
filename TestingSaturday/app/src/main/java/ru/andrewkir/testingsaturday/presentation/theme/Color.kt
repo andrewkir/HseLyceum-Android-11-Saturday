@@ -1,4 +1,4 @@
-package ru.andrewkir.testingsaturday.ui.theme
+package ru.andrewkir.testingsaturday.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

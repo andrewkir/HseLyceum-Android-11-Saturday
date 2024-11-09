@@ -1,4 +1,4 @@
-package ru.andrewkir.testingsaturday.ui.components
+package ru.andrewkir.testingsaturday.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
