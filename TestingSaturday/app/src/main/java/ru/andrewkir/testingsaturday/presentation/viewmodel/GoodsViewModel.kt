@@ -7,6 +7,7 @@ import ru.andrewkir.testingsaturday.models.GoodsModel
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent.OnAddButtonClicked
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent.OnTextUpdated
+import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent.OnUrlUpdated
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsState
 
 class GoodsViewModel : ViewModel() {
@@ -27,11 +28,17 @@ class GoodsViewModel : ViewModel() {
               rating = 4,
               price = 1000000,
               comment = "Немецкое качество",
-              coverId = R.drawable.bmw
+              coverId = R.drawable.bmw,
+              imageURL = state.value.enteredUrl,
             ),
           ),
-          enteredText = ""
+          enteredText = "",
+          enteredUrl = "",
         )
+      }
+
+      is OnUrlUpdated -> {
+        state.value = state.value.copy(enteredUrl = event.url)
       }
     }
   }

@@ -1,6 +1,5 @@
 package ru.andrewkir.testingsaturday.presentation.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,15 +16,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import ru.andrewkir.testingsaturday.R
 import ru.andrewkir.testingsaturday.models.GoodsModel
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun GoodsCard(
   item: GoodsModel,
@@ -38,13 +38,12 @@ fun GoodsCard(
         onButtonClick(item.name)
       }
   ) {
-    Image(
+    GlideImage(
       modifier = Modifier
         .height(150.dp)
         .fillMaxWidth(),
-      painter = painterResource(item.coverId),
+      model = item.imageURL,
       contentDescription = "Фоновое изображение",
-      contentScale = ContentScale.Crop
     )
 
     Row(

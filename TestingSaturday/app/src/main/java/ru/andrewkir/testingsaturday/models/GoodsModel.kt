@@ -9,4 +9,5 @@ data class GoodsModel(
   val comment: String,
   @DrawableRes
   val coverId: Int,
+  val imageURL: String = "",
 )

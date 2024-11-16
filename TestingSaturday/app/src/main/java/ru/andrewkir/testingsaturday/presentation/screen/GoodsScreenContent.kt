@@ -1,14 +1,16 @@
 package ru.andrewkir.testingsaturday.presentation.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,22 +27,34 @@ fun GoodsScreenContent(
   state: GoodsState,
   onEvent: (GoodsEvent) -> Unit,
 ) {
-  Column {
+  Column(modifier = Modifier.padding(start = 12.dp)) {
     Row(
       modifier = Modifier.fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically
     ) {
-      TextField(
-        value = state.enteredText,
-        onValueChange = { changedValue -> onEvent(GoodsEvent.OnTextUpdated(changedValue)) },
-        label = { Text("Enter") })
+      Column(verticalArrangement = Arrangement.Bottom) {
+        OutlinedTextField(
+          value = state.enteredText,
+          onValueChange = { changedValue -> onEvent(GoodsEvent.OnTextUpdated(changedValue)) },
+          label = { Text("Enter") })
 
-      Button(
-        modifier = Modifier.padding(start = 14.dp),
-        onClick = {
-          onEvent(GoodsEvent.OnAddButtonClicked)
-        }) {
-        Text(text = "Add")
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+          OutlinedTextField(
+            modifier = Modifier
+              .padding(vertical = 16.dp)
+              .width(300.dp),
+            value = state.enteredUrl,
+            onValueChange = { changedValue -> onEvent(GoodsEvent.OnUrlUpdated(changedValue)) },
+            label = { Text("Url") })
+
+          Button(
+            modifier = Modifier.padding(start = 14.dp),
+            onClick = {
+              onEvent(GoodsEvent.OnAddButtonClicked)
+            }) {
+            Text(text = "Add")
+          }
+        }
       }
     }
     LazyColumn(modifier = Modifier.padding(horizontal = 6.dp, vertical = 12.dp)) {
@@ -48,7 +62,7 @@ fun GoodsScreenContent(
         item {
           GoodsCard(
             item = goodsModel,
-            onButtonClick = {  }
+            onButtonClick = { }
           )
           Spacer(modifier = Modifier.padding(6.dp))
         }
@@ -78,7 +92,8 @@ private fun GoodsScreenContentPreview() {
           coverId = R.drawable.gaz
         )
       ),
-      enteredText = ""
+      enteredText = "",
+      enteredUrl = "https://i.pinimg.com/736x/4d/ca/43/4dca433d1f1bdfaa4224a08f3c2dc1d0.jpg",
     )
   ) {}
 }
