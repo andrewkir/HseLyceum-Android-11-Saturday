@@ -3,7 +3,7 @@ package ru.andrewkir.testingsaturday.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.andrewkir.testingsaturday.R
-import ru.andrewkir.testingsaturday.models.GoodsModel
+import ru.andrewkir.testingsaturday.data.models.GoodsModel
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent.OnAddButtonClicked
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent.OnTextUpdated

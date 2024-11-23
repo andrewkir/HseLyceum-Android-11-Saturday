@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.andrewkir.testingsaturday.R
-import ru.andrewkir.testingsaturday.models.GoodsModel
+import ru.andrewkir.testingsaturday.data.models.GoodsModel
 import ru.andrewkir.testingsaturday.presentation.components.GoodsCard
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent
 import ru.andrewkir.testingsaturday.presentation.contract.GoodsState

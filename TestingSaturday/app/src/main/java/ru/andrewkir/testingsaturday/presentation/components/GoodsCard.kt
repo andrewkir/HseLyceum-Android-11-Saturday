@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import ru.andrewkir.testingsaturday.R
-import ru.andrewkir.testingsaturday.models.GoodsModel
+import ru.andrewkir.testingsaturday.data.models.GoodsModel
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
