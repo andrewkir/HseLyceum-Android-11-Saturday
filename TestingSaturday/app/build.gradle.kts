@@ -1,6 +1,8 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlinAndroidKsp)
+  id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -64,6 +66,10 @@ dependencies {
   implementation(libs.gson)
   implementation(libs.converter.gson)
   implementation(libs.logging.interceptor)
+  implementation(libs.kotlinx.serialization.json)
+
+  implementation(libs.room)
+  ksp(libs.roomKsp)
 
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)

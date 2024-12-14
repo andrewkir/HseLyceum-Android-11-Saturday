@@ -48,13 +48,15 @@ class GoodsViewModel : ViewModel() {
           try {
             val users = api.getUsers()
             users.forEach {
+              val usersFollowers = api.getFollowers(it.login)
+
               state.value = state.value.copy(
                 goods = state.value.goods + listOf(
                   GoodsModel(
                     name = it.login,
                     rating = 4,
                     price = 1000000,
-                    comment = it.login,
+                    comment = usersFollowers.toString(),
                     coverId = R.drawable.bmw,
                     imageURL = state.value.enteredUrl,
                   ),
