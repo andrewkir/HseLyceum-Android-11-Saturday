@@ -1,4 +1,4 @@
-package ru.andrewkir.testingsaturday.presentation.contract
+package ru.andrewkir.testingsaturday.presentation.goods.contract
 
 import ru.andrewkir.testingsaturday.data.models.GoodsModel
 

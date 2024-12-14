@@ -71,6 +71,9 @@ dependencies {
   implementation(libs.room)
   ksp(libs.roomKsp)
 
+  implementation(libs.coreDestinations)
+  ksp(libs.composeDestinationsKSP)
+
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)

@@ -1,4 +1,4 @@
-package ru.andrewkir.testingsaturday.presentation.screen
+package ru.andrewkir.testingsaturday.presentation.goods.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,9 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.andrewkir.testingsaturday.R
 import ru.andrewkir.testingsaturday.data.models.GoodsModel
-import ru.andrewkir.testingsaturday.presentation.components.GoodsCard
-import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent
-import ru.andrewkir.testingsaturday.presentation.contract.GoodsState
+import ru.andrewkir.testingsaturday.presentation.goods.components.GoodsCard
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsState
 
 @Composable
 fun GoodsScreenContent(
@@ -62,7 +62,7 @@ fun GoodsScreenContent(
         item {
           GoodsCard(
             item = goodsModel,
-            onButtonClick = { }
+            onEvent = onEvent
           )
           Spacer(modifier = Modifier.padding(6.dp))
         }

@@ -1,8 +1,10 @@
-package ru.andrewkir.testingsaturday.presentation.viewmodel
+package ru.andrewkir.testingsaturday.presentation.goods.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient.Builder
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,15 +13,46 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.andrewkir.testingsaturday.R
 import ru.andrewkir.testingsaturday.data.api.GithubApi
 import ru.andrewkir.testingsaturday.data.models.GoodsModel
-import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent
-import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent.OnAddButtonClicked
-import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent.OnTextUpdated
-import ru.andrewkir.testingsaturday.presentation.contract.GoodsEvent.OnUrlUpdated
-import ru.andrewkir.testingsaturday.presentation.contract.GoodsState
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEffect
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEffect.OpenDetails
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent.OnAddButtonClicked
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent.OnCardClicked
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent.OnTextUpdated
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent.OnUrlUpdated
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsState
 
 class GoodsViewModel : ViewModel() {
 
   val state = MutableStateFlow(GoodsState())
+
+  private val _effect = Channel<GoodsEffect>()
+  val effect = _effect.receiveAsFlow()
+
+  init {
+    state.value = state.value.copy(
+      goods = state.value.goods + listOf(
+        GoodsModel(
+          name = "state.value.enteredText",
+          rating = 4,
+          price = 1000000,
+          comment = "Немецкое качество",
+          coverId = R.drawable.bmw,
+          imageURL = state.value.enteredUrl,
+        ),
+        GoodsModel(
+          name = "Test!",
+          rating = 4,
+          price = 1000000,
+          comment = "Немецкое качество",
+          coverId = R.drawable.bmw,
+          imageURL = state.value.enteredUrl,
+        ),
+      ),
+      enteredText = "",
+      enteredUrl = "",
+    )
+  }
 
   private fun getApi(): GithubApi {
     val okHttpClient = Builder()
@@ -48,15 +81,13 @@ class GoodsViewModel : ViewModel() {
           try {
             val users = api.getUsers()
             users.forEach {
-              val usersFollowers = api.getFollowers(it.login)
-
               state.value = state.value.copy(
                 goods = state.value.goods + listOf(
                   GoodsModel(
                     name = it.login,
                     rating = 4,
                     price = 1000000,
-                    comment = usersFollowers.toString(),
+                    comment = "comment",
                     coverId = R.drawable.bmw,
                     imageURL = state.value.enteredUrl,
                   ),
@@ -85,6 +116,12 @@ class GoodsViewModel : ViewModel() {
 
       is OnUrlUpdated -> {
         state.value = state.value.copy(enteredUrl = event.url)
+      }
+
+      is OnCardClicked -> {
+        viewModelScope.launch {
+          _effect.send(OpenDetails(event.goodsModel))
+        }
       }
     }
   }

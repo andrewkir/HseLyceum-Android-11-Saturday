@@ -1,4 +1,4 @@
-package ru.andrewkir.testingsaturday.presentation.components
+package ru.andrewkir.testingsaturday.presentation.goods.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -24,18 +24,20 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import ru.andrewkir.testingsaturday.R
 import ru.andrewkir.testingsaturday.data.models.GoodsModel
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent
+import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent.OnCardClicked
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun GoodsCard(
   item: GoodsModel,
-  onButtonClick: (String) -> Unit,
+  onEvent: (GoodsEvent) -> Unit,
 ) {
   ElevatedCard(
     modifier = Modifier
       .fillMaxWidth()
       .clickable {
-        onButtonClick(item.name)
+        onEvent(OnCardClicked(item))
       }
   ) {
     GlideImage(
