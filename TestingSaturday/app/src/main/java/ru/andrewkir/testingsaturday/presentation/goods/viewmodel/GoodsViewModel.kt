@@ -10,8 +10,10 @@ import okhttp3.OkHttpClient.Builder
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.andrewkir.testingsaturday.App
 import ru.andrewkir.testingsaturday.R
 import ru.andrewkir.testingsaturday.data.api.GithubApi
+import ru.andrewkir.testingsaturday.data.dao.User
 import ru.andrewkir.testingsaturday.data.models.GoodsModel
 import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEffect
 import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEffect.OpenDetails
@@ -21,6 +23,7 @@ import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent.OnCar
 import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent.OnTextUpdated
 import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsEvent.OnUrlUpdated
 import ru.andrewkir.testingsaturday.presentation.goods.contract.GoodsState
+import kotlin.random.Random
 
 class GoodsViewModel : ViewModel() {
 
@@ -75,43 +78,71 @@ class GoodsViewModel : ViewModel() {
         state.value = state.value.copy(enteredText = event.text)
       }
 
+//      OnAddButtonClicked -> {
+//        val api = getApi()
+//        viewModelScope.launch {
+//          try {
+//            val users = api.getUsers()
+//            users.forEach {
+//              state.value = state.value.copy(
+//                goods = state.value.goods + listOf(
+//                  GoodsModel(
+//                    name = it.login,
+//                    rating = 4,
+//                    price = 1000000,
+//                    comment = "comment",
+//                    coverId = R.drawable.bmw,
+//                    imageURL = state.value.enteredUrl,
+//                  ),
+//                ),
+//              )
+//            }
+//          } catch (e: Exception) {
+//            e.printStackTrace()
+//          }
+//        }
+////        state.value = state.value.copy(
+////          goods = state.value.goods + listOf(
+////            GoodsModel(
+////              name = state.value.enteredText,
+////              rating = 4,
+////              price = 1000000,
+////              comment = "Немецкое качество",
+////              coverId = R.drawable.bmw,
+////              imageURL = state.value.enteredUrl,
+////            ),
+////          ),
+////          enteredText = "",
+////          enteredUrl = "",
+////        )
+//      }
+
       OnAddButtonClicked -> {
-        val api = getApi()
-        viewModelScope.launch {
-          try {
-            val users = api.getUsers()
-            users.forEach {
-              state.value = state.value.copy(
-                goods = state.value.goods + listOf(
-                  GoodsModel(
-                    name = it.login,
-                    rating = 4,
-                    price = 1000000,
-                    comment = "comment",
-                    coverId = R.drawable.bmw,
-                    imageURL = state.value.enteredUrl,
-                  ),
-                ),
-              )
-            }
-          } catch (e: Exception) {
-            e.printStackTrace()
-          }
+        val model = GoodsModel(
+          name = state.value.enteredText,
+          rating = 4,
+          price = 1000000,
+          comment = "Немецкое качество",
+          coverId = R.drawable.bmw,
+          imageURL = state.value.enteredUrl,
+        )
+        state.value = state.value.copy(
+          goods = state.value.goods + listOf(
+            model
+          ),
+          enteredText = "",
+          enteredUrl = "",
+        )
+        val db = App.getDatabase()
+        db?.let {
+          val usersDao = db.userDao()
+          usersDao.insert(
+            User(
+              Random.nextInt().toString(),
+              model.name,
+            )
+          )
         }
-//        state.value = state.value.copy(
-//          goods = state.value.goods + listOf(
-//            GoodsModel(
-//              name = state.value.enteredText,
-//              rating = 4,
-//              price = 1000000,
-//              comment = "Немецкое качество",
-//              coverId = R.drawable.bmw,
-//              imageURL = state.value.enteredUrl,
-//            ),
-//          ),
-//          enteredText = "",
-//          enteredUrl = "",
-//        )
       }
 
       is OnUrlUpdated -> {
@@ -122,6 +153,7 @@ class GoodsViewModel : ViewModel() {
         viewModelScope.launch {
           _effect.send(OpenDetails(event.goodsModel))
         }
+//        App.getDatabase()?.let { Log.d("MYTAG", it.userDao().getAll().toString()) }
       }
     }
   }
